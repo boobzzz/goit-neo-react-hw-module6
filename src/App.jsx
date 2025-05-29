@@ -12,14 +12,6 @@ import './App.css';
 const C_KEY = 'contacts';
 
 function App() {
-    // const [contacts, setContacts] = useState(() => {
-    //     const savedContacts = localStorage.getItem(C_KEY);
-    //     if (savedContacts !== null) {
-    //         return JSON.parse(savedContacts);
-    //     }
-    //
-    //     return contactList;
-    // });
     const contacts = useSelector(state => state.contacts.items);
     const filter = useSelector(state => state.filters.name);
     const dispatch = useDispatch();
