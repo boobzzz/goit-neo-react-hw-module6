@@ -1,10 +1,13 @@
 import { useId } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFilter } from '../redux/filtersSlice.js';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import css from './SearchBox.module.css';
-import PropTypes from "prop-types";
 
-export default function SearchBox({ value, onFilter }) {
+export default function SearchBox() {
     const searchFieldId = useId();
+    const filter = useSelector(state => state.filters.name);
+    const dispatch = useDispatch();
 
     return (
         <Formik
@@ -19,8 +22,10 @@ export default function SearchBox({ value, onFilter }) {
                     type="text"
                     id={searchFieldId}
                     name="search"
-                    value={value}
-                    onChange={(e) => onFilter(e.target.value)}
+                    value={filter}
+                    onChange={(e) => {
+                        dispatch(changeFilter(e.target.value));
+                    }}
                 />
                 <ErrorMessage
                     className={css.error}
@@ -30,9 +35,4 @@ export default function SearchBox({ value, onFilter }) {
             </Form>
         </Formik>
     );
-}
-
-SearchBox.PropTypes = {
-    value: PropTypes.string.isRequired,
-    onFilter: PropTypes.func.isRequired
 };

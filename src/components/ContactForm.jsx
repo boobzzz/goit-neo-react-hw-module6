@@ -1,7 +1,9 @@
 import { useId } from 'react';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { addContact } from '../redux/contactsSlice.js';
+import { nanoid } from '@reduxjs/toolkit';
 import * as Yup from 'yup';
-import PropTypes from 'prop-types';
 import css from './ContactForm.module.css';
 
 const ContactSchema = Yup.object().shape({
@@ -14,12 +16,14 @@ const ContactSchema = Yup.object().shape({
         .matches(/^\d{3}-\d{2}-\d{2}$/, 'Phone number is not valid'),
 });
 
-export default function ContactForm({ addContact }) {
+export default function ContactForm() {
     const nameFieldId = useId();
     const numberFieldId = useId();
+    const dispatch = useDispatch();
 
     const handleSubmit = (values, actions) => {
-        addContact(values);
+        values.id = nanoid();
+        dispatch(addContact(values));
         actions.resetForm();
     };
 
@@ -57,8 +61,4 @@ export default function ContactForm({ addContact }) {
             </Form>
         </Formik>
     );
-}
-
-ContactForm.PropTypes = {
-    addContact: PropTypes.func.isRequired
 };
